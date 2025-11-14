@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Java安全 on star徐的博客</title>
+    <link>//localhost:26294/tags/java%E5%AE%89%E5%85%A8/</link>
+    <description>Recent content in Java安全 on star徐的博客</description>
+    <generator>Hugo -- 0.152.2</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 13 Nov 2025 17:00:00 +0800</lastBuildDate>
+    <atom:link href="//localhost:26294/tags/java%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CC链跟踪(千问3)</title>
+      <link>//localhost:26294/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA%E5%8D%83%E9%97%AE3/</link>
+      <pubDate>Thu, 13 Nov 2025 17:00:00 +0800</pubDate>
+      <guid>//localhost:26294/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA%E5%8D%83%E9%97%AE3/</guid>
+      <description>&lt;h3 id=&#34;写在前面一份关于cc1调用链的个人学习笔记&#34;&gt;&lt;strong&gt;写在前面：一份关于CC1调用链的个人学习笔记&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;在您深入阅读本文档之前，笔者希望先分享几点说明：&lt;/p&gt;
+&lt;p&gt;要完全理解本文所剖析的调用链，建议您对Java中的一些基础概念有一定了解，例如 Map 接口、注解（Annotation）、反射（Reflection）以及 HashMap 的内部工作方式。尤其是，理解 &lt;strong&gt;Map 结构与Java注解机制如何在此场景下协同工作，并最终为何会成为触发漏洞的关键&lt;/strong&gt;，是掌握整个攻击链的重中之重。&lt;/p&gt;
+&lt;p&gt;我本人也没有从事过Java开发，说实话也是东一榔头西一棒子的学习零散知识，本文并非原创性的漏洞研究，其内容是在安全领域前辈们（大神）已经完整梳理出攻击链的基础之上，并借助AI辅助学习和分析(源码不能确保百分百真实，但是逻辑经过我确认应该没问题的)，将整个调用流程一步步跟踪下来，旨在理清每一环节的执行逻辑与内在联系。&lt;/p&gt;
+&lt;p&gt;因此，这更像是一篇详细的学习笔记和思考过程的记录。希望能对同样在学习路上的朋友们有所启发，文中若有任何疏漏或不当之处，也恳请各位不吝赐教。&lt;/p&gt;
+&lt;h1 id=&#34;一核心思想概述&#34;&gt;一、核心思想概述&lt;/h1&gt;
+&lt;p&gt;&amp;ldquo;⚠️ 本测试方案仅用于安全研究与学习目的。任何未经授权的利用行为均违反法律，请务必在授权的测试环境中使用。&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;目标&lt;/strong&gt;：通过&lt;code&gt;AnnotationInvocationHandler&lt;/code&gt;和&lt;code&gt;TransformedMap&lt;/code&gt;构造恶意对象，在反序列化时触发&lt;code&gt;Runtime.exec()&lt;/code&gt;执行任意命令。&lt;/p&gt;
+&lt;h3 id=&#34;核心逻辑&#34;&gt;&lt;strong&gt;✍️核心逻辑&lt;/strong&gt;：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;攻击者使用 &lt;code&gt;TransformedMap.decorate()&lt;/code&gt; 方法，将一个包含恶意 &lt;code&gt;ChainedTransformer&lt;/code&gt; 链的 &lt;code&gt;valueTransformer&lt;/code&gt; 绑定到一个普通的 &lt;code&gt;HashMap&lt;/code&gt; 上，构造出具有自动转换能力的恶意 &lt;code&gt;TransformedMap&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;该 &lt;code&gt;ChainedTransformer&lt;/code&gt; 链被精心设计为依次执行：获取 &lt;code&gt;Runtime.class&lt;/code&gt; → 反射调用 &lt;code&gt;getRuntime()&lt;/code&gt; → 获取 &lt;code&gt;Runtime&lt;/code&gt; 实例 → 调用 &lt;code&gt;exec(&amp;quot;calc&amp;quot;)&lt;/code&gt;，从而实现任意命令执行。&lt;/li&gt;
+&lt;li&gt;攻击者通过反射创建 &lt;code&gt;AnnotationInvocationHandler&lt;/code&gt; 实例，并将上述恶意 &lt;code&gt;TransformedMap&lt;/code&gt; 作为其 &lt;code&gt;memberValues&lt;/code&gt; 字段的值，使该 handler 在语义上“看起来像”一个合法的注解代理对象。&lt;/li&gt;
+&lt;li&gt;攻击者将整个 &lt;code&gt;AnnotationInvocationHandler&lt;/code&gt; 对象序列化，生成可传输的 payload，并发送给存在反序列化漏洞的目标服务。&lt;/li&gt;
+&lt;li&gt;目标服务在反序列化该 payload 时，自动调用 &lt;code&gt;AnnotationInvocationHandler.readObject()&lt;/code&gt; 方法；该方法会遍历 &lt;code&gt;memberValues.entrySet()&lt;/code&gt;，并对每个条目进行类型校验。&lt;/li&gt;
+&lt;li&gt;在反序列化过程中，&lt;code&gt;AnnotationInvocationHandler.readObject()&lt;/code&gt;会遍历&lt;code&gt;memberValues&lt;/code&gt;的键值对。当它尝试将&lt;code&gt;memberValues&lt;/code&gt;中的值转换为注解定义的类型时，如果类型不匹配（如&lt;code&gt;String&lt;/code&gt;被转换为&lt;code&gt;Integer&lt;/code&gt;），JDK会自动调用&lt;code&gt;entry.setValue(newValue)&lt;/code&gt;，来更新值，即使新旧值相同。这个动作恰好触发了我们预设的陷阱。
+💡不懂的强烈建议学下Map和注解是干什么的，其实最终目的就是为了解耦，本人也是Java小白&lt;/li&gt;
+&lt;li&gt;而 &lt;code&gt;TransformedMap&lt;/code&gt; 重写了 &lt;code&gt;entrySet()&lt;/code&gt;，返回的是自定义的 &lt;code&gt;EntrySetView&lt;/code&gt;；其迭代器 &lt;code&gt;TransformedMapEntryIterator&lt;/code&gt; 会将原始 &lt;code&gt;Map.Entry&lt;/code&gt; 包装为 &lt;code&gt;TransformedMapEntry&lt;/code&gt;，并在构造时保存对 &lt;code&gt;TransformedMap&lt;/code&gt; 自身（即 &lt;code&gt;parent&lt;/code&gt;）的引用。&lt;/li&gt;
+&lt;li&gt;因此，&lt;code&gt;e.setValue(newValue)&lt;/code&gt; 实际调用的是 &lt;code&gt;TransformedMapEntry.setValue()&lt;/code&gt;，该方法首先调用 &lt;code&gt;parent.checkSetValue(value)&lt;/code&gt;，进而触发 &lt;code&gt;valueTransformer.transform(value)&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;最终，绑定在 &lt;code&gt;TransformedMap&lt;/code&gt; 中的 &lt;code&gt;ChainedTransformer&lt;/code&gt; 链被执行，完成 &lt;code&gt;Runtime.getRuntime().exec(&amp;quot;calc&amp;quot;)&lt;/code&gt; 的调用，实现远程命令执行（RCE）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;-漏洞原理小结&#34;&gt;📝 漏洞原理&amp;quot;小结&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;漏洞本质：利用JDK反序列化过程中对&lt;code&gt;AnnotationInvocationHandler&lt;/code&gt;的处理逻辑，结合Apache Commons Collections的&lt;code&gt;TransformedMap&lt;/code&gt;的自动转换特性，实现任意命令执行。&amp;rdquo;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

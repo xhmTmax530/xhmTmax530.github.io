@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>组网 on star徐的博客</title><link>https://ljj1993.fun/tags/%E7%BB%84%E7%BD%91/</link><description>Recent content in 组网 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Thu, 13 Nov 2025 18:05:00 +0810</lastBuildDate><atom:link href="https://ljj1993.fun/tags/%E7%BB%84%E7%BD%91/index.xml" rel="self" type="application/rss+xml"/><item><title>基于WireGuard的国内到国外VPS组网架构</title><link>https://ljj1993.fun/posts/%E5%9F%BA%E4%BA%8Ewireguard%E7%9A%84%E5%9B%BD%E5%86%85%E5%88%B0%E5%9B%BD%E5%A4%96vps%E7%BB%84%E7%BD%91%E6%9E%B6%E6%9E%84/</link><pubDate>Thu, 13 Nov 2025 18:05:00 +0810</pubDate><guid>https://ljj1993.fun/posts/%E5%9F%BA%E4%BA%8Ewireguard%E7%9A%84%E5%9B%BD%E5%86%85%E5%88%B0%E5%9B%BD%E5%A4%96vps%E7%BB%84%E7%BD%91%E6%9E%B6%E6%9E%84/</guid><description>&lt;h2 id="概述与技术栈建议"&gt;概述与技术栈建议&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;需求实现&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;DNS分流 (黑名单模式)&lt;/strong&gt;：被墙域名通过&lt;code&gt;8.8.8.8&lt;/code&gt;走WireGuard隧道解析；国内及所有未匹配的域名，默认通过&lt;code&gt;114.114.114.114&lt;/code&gt;直连解析。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;流量分流 (黑名单模式)&lt;/strong&gt;：目标IP在大陆IP列表中的流量直连；目标IP在被墙IP列表中的流量走隧道；所有未匹配的流量默认直连。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全增强&lt;/strong&gt;：集成Kill Switch，当隧道意外断开时，自动阻止所有应走隧道的流量，防止真实IP泄露。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自动化与持久化&lt;/strong&gt;：所有路由和防火墙规则与WireGuard接口生命周期绑定，实现开机自启、自动配置与清理，无需手动干预。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;技术栈&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;WireGuard：VPN隧道（UDP，端口51820）。&lt;/li&gt;
+&lt;li&gt;Dnsmasq：本地DNS服务器，分流解析。&lt;/li&gt;
+&lt;li&gt;ipset + iptables + ip rule/route：政策路由分流。&lt;/li&gt;
+&lt;li&gt;gfwlist2dnsmasq.sh：生成被墙域名黑名单。&lt;/li&gt;
+&lt;li&gt;cron + bash：自动化更新。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先在测试环境试运行，避免影响生产。&lt;/li&gt;
+&lt;li&gt;VPS防火墙需允许WireGuard端口：&lt;code&gt;ufw allow 51820/udp&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;VPS启用IP转发：&lt;code&gt;echo 'net.ipv4.ip_forward=1' &amp;gt;&amp;gt; /etc/sysctl.conf; sysctl -p&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="步骤1-安装必要工具"&gt;步骤1: 安装必要工具&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;VPS (服务器端)&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 2. 更新Dnsmasq域名列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wget -O /etc/dnsmasq.d/accelerated-domains.china.conf https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wget -O /etc/dnsmasq.d/bogus-nxdomain.china.conf https://github.com/felixonmars/dnsmasq-china-list/raw/master/bogus-nxdomain.china.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 清空gfwlist ipset，让脚本重新填充&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ipset flush gfwlist
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; /usr/local/bin/gfwlist2dnsmasq.sh -s 8.8.8.8 -i gfwlist -o /etc/dnsmasq.d/gfwlist.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 3. 更新ipset IP列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 使用临时文件避免网络问题导致列表被清空&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; TMP_FILE&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;mktemp&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wget -O &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;$TMP_FILE&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt; https://github.com/gaoyifan/china-operator-ip/raw/ip-lists/china.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ipset flush china_ip
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;while&lt;/span&gt; read line; &lt;span style="color:#66d9ef"&gt;do&lt;/span&gt; ipset add china_ip $line; &lt;span style="color:#66d9ef"&gt;done&lt;/span&gt; &amp;lt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;$TMP_FILE&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; rm &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;$TMP_FILE&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ipset add china_ip 114.114.114.114
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 4. 重启Dnsmasq服务以应用新域名列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; systemctl restart dnsmasq
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; echo &lt;span style="color:#e6db74"&gt;&amp;#34;Lists updated successfully.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;VPS (/etc/wireguard/wg0.conf)&lt;/strong&gt; - (此部分无变化):&lt;/p&gt;</description></item></channel></rss>
