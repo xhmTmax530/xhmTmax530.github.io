@@ -144,14 +144,12 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; echo &lt;span style="color:#e6db74"&gt;&amp;#34;Lists updated successfully.&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;VPS (/etc/wireguard/wg0.conf)&lt;/strong&gt; - (此部分无变化):&lt;/p&gt;</description></item><item><title/><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;---
-title: &amp;#34;Java内存马-监听器&amp;#34; # 新文章标题
+&lt;p&gt;&lt;strong&gt;VPS (/etc/wireguard/wg0.conf)&lt;/strong&gt; - (此部分无变化):&lt;/p&gt;</description></item><item><title/><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;title: &amp;#34;Java内存马-监听器&amp;#34; # 新文章标题
 date: 2025-11-16T20:10:00+08:00 # 请根据你创建的实际时间修改
 draft: false
 categories: [&amp;#34;网络安全&amp;#34;] # 🎯 关键：设置为目标分类
 tags: [&amp;#34;网络安全&amp;#34;, &amp;#34;Java&amp;#34;, &amp;#34;内存马&amp;#34;] # 建议添加一些相关标签
 mermaid: true # ⭐ 关键：启用 Mermaid 图表支持
----
 &lt;/code&gt;&lt;/pre&gt;&lt;h1 id="java内存马-监听器"&gt;Java内存马-监听器&lt;/h1&gt;
 &lt;p&gt;以下内容仅限Java小白，高手无视就可以&lt;/p&gt;
 &lt;h2 id="一-java-监听器到底有啥用"&gt;一、 Java 监听器到底有啥用？&lt;/h2&gt;
