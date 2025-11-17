@@ -1,4 +1,76 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>网络安全 on star徐的博客</title><link>http://ljj1992.fun/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link><description>Recent content in 网络安全 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Thu, 13 Nov 2025 19:00:00 +0820</lastBuildDate><atom:link href="http://ljj1992.fun/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>CC链跟踪</title><link>http://ljj1992.fun/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA/</link><pubDate>Thu, 13 Nov 2025 19:00:00 +0820</pubDate><guid>http://ljj1992.fun/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA/</guid><description>&lt;h1 id="你的文章正文内容从这里开始"&gt;你的文章正文内容，从这里开始&amp;hellip;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>网络安全 on star徐的博客</title><link>http://ljj1992.fun/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link><description>Recent content in 网络安全 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Mon, 17 Nov 2025 16:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>Java内存马-监听器</title><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 17 Nov 2025 16:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;h1 id="java内存马-监听器"&gt;Java内存马-监听器&lt;/h1&gt;
+&lt;p&gt;以下内容仅限Java小白，高手无视就可以&lt;/p&gt;
+&lt;h2 id="一-java-监听器到底有啥用"&gt;一、 Java 监听器到底有啥用？&lt;/h2&gt;
+&lt;p&gt;你可以把监听器想象成“保安”或者“监控摄像头”。
+在 Web 应用里，有三件大事经常发生：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用启动 / 关闭（ServletContext）&lt;/li&gt;
+&lt;li&gt;用户登录 / 退出（HttpSession）&lt;/li&gt;
+&lt;li&gt;每次发请求 / 请求结束（ServletRequest）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;监听器就是提前注册好，告诉系统：“一旦发生上面这些事，就立刻通知我，让我执行一段代码”。&lt;/p&gt;
+&lt;p&gt;比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用启动时，自动创建数据库连接池；&lt;/li&gt;
+&lt;li&gt;用户登录时，记录日志；&lt;/li&gt;
+&lt;li&gt;每次请求到来时，检查是否携带了合法的 token。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这样就把“业务逻辑”和“事件”分开，代码更清晰，也更容易扩展。&lt;/p&gt;
+&lt;h2 id="二-为什么监听器能变成内存马"&gt;二、 为什么监听器能变成“内存马”？&lt;/h2&gt;
+&lt;p&gt;内存马”就是黑客把一段恶意代码悄悄塞进正在运行的 Java 应用里，让它像木马一样长期潜伏，即使服务器重启也不会消失（因为代码已经加载到内存）。
+监听器之所以容易被利用，是因为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;它能在&lt;strong&gt;每次请求&lt;/strong&gt;或&lt;strong&gt;应用启动&lt;/strong&gt;时自动执行；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;只要能往 &lt;code&gt;web.xml&lt;/code&gt; 里加一行配置，或者用注解 &lt;code&gt;@WebListener&lt;/code&gt;，就能让这段代码生效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;黑客把恶意逻辑写在监听器的回调方法里，就能在不修改原有业务代码的情况下，偷偷执行命令、回弹 shell 等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="三-工作原理"&gt;三. 工作原理&lt;/h2&gt;
+&lt;p&gt;Java Web 的监听器基于“观察者模式”：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;被观察者（事件源）：ServletContext、HttpSession、ServletRequest 等；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;观察者（监听器）：你写的类，实现对应的 &lt;code&gt;*Listener&lt;/code&gt; 接口；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当事件源状态变化（创建、销毁、属性改变），容器会自动调用监听器里对应的方法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="31--举个简单的监听器例子"&gt;3.1 举个简单的“监听器”例子&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;// 1. 导入需要的类
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.annotation.WebListener;
+// 2. 告诉 Tomcat：这是一个监听器，请自动注册
+@WebListener
+public class MyRequestListener implements ServletRequestListener {
+// 3. 当请求开始时（用户发来请求），这个方法自动执行
+@Override
+public void requestInitialized(ServletRequestEvent event) {
+System.out.println(&amp;#34;🔔 请求开始了！有人访问服务器了！&amp;#34;);
+// 4. 我们还可以拿到具体是哪个请求
+ServletRequest request = event.getServletRequest();
+String remoteAddr = request.getRemoteAddr(); // 用户的 IP
+String method = request.getMethod(); // 请求方式 GET/POST
+String uri = request.getRequestURI(); // 访问的路径
+System.out.printf(&amp;#34;📌 来访者IP: %s | 方法: %s | 路径: %s%n&amp;#34;,
+remoteAddr, method, uri);
+}
+// 5. 当请求结束时（服务器响应完），这个方法自动执行
+@Override
+public void requestDestroyed(ServletRequestEvent event) {
+System.out.println(&amp;#34;🔚 请求结束了！用户请求处理完成。&amp;#34;);
+}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;🔍逐行解释：&lt;/p&gt;</description></item><item><title>CC链跟踪</title><link>http://ljj1992.fun/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA/</link><pubDate>Thu, 13 Nov 2025 19:00:00 +0820</pubDate><guid>http://ljj1992.fun/posts/cc%E9%93%BE%E8%B7%9F%E8%B8%AA/</guid><description>&lt;h1 id="你的文章正文内容从这里开始"&gt;你的文章正文内容，从这里开始&amp;hellip;&lt;/h1&gt;
 &lt;h3 id="写在前面一份关于cc1调用链的个人学习笔记"&gt;&lt;strong&gt;写在前面：一份关于CC1调用链的个人学习笔记&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;在您深入阅读本文档之前，笔者希望先分享几点说明：&lt;/p&gt;
 &lt;p&gt;要完全理解本文所剖析的调用链，建议您对Java中的一些基础概念有一定了解，例如 Map 接口、注解（Annotation）、反射（Reflection）以及 HashMap 的内部工作方式。尤其是，理解 &lt;strong&gt;Map 结构与Java注解机制如何在此场景下协同工作，并最终为何会成为触发漏洞的关键&lt;/strong&gt;，是掌握整个攻击链的重中之重。&lt;/p&gt;
