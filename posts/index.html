@@ -6,7 +6,13 @@
 codeBash
 npm install -g @anthropic-ai/claude-code 【原理讲解】 npm 是 Node.js 的包管理器。-g 参数代表“全局安装”，这意味着你可以在电脑的任何文件夹中使用 claude 命令。
 3. 启动与初始化 创建项目文件夹： 在你希望的位置创建一个新文件夹（例如 my-first-app），然后通过终端进入该文件夹。 启动 Claude Code： 在项目文件夹的终端中，输入 claude 并回车。 初始化项目： 启动后，立刻输入 /init 命令。 【至关重要】 /init 命令是与 Claude Code 高效协作的基石。它会扫描当前项目并创建一个 CLAUDE.md 文件。这个文件相当于 AI 的“项目记忆”，后续所有操作，AI 都会参考它来理解你的项目结构，确保它的行为与你的项目高度相关。
-...</p></div><footer class=entry-footer><span title='2025-11-17 17:20:00 +0800 +0800'>November 17, 2025</span>&nbsp;·&nbsp;<span>您的姓名</span></footer><a class=entry-link aria-label="post link to Claude Code 常用命令使用解析" href=http://ljj1992.fun/posts/claude-code-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/></a></article><article class=post-entry><header class=entry-header><h2>Java内存马-监听器</h2></header><div class=entry-content><p>Java内存马-监听器 以下内容仅限Java小白，高手无视就可以
+...</p></div><footer class=entry-footer><span title='2025-11-17 17:20:00 +0800 +0800'>November 17, 2025</span>&nbsp;·&nbsp;<span>您的姓名</span></footer><a class=entry-link aria-label="post link to Claude Code 常用命令使用解析" href=http://ljj1992.fun/posts/claude-code-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/></a></article><article class=post-entry><header class=entry-header><h2>Claude Code 常用命令使用解析</h2></header><div class=entry-content><p>Claude Code 常用命令使用解析 大家好，作为一个刚接触 Claude Code 的新手，我根据官方文档和一些热门的介绍视频，整理这份学习笔记和实践总结。主要是为了记录自己的学习过程，同时也希望能起到一个抛砖引玉的作用，为同样在入门路上的朋友们提供一些参考和便利。
+这篇总结更多是我个人的理解和实践，内容可能比较基础，难免有疏漏或错误之处，对于经验丰富的高手们，可以直接略过这篇文章。
+🚀 第一部分：基础入门 - 安装与启动 1. 环境准备 安装 Node.js： Claude Code 是一个基于 Node.js 的命令行工具。请先访问 Node.js 官网，下载并安装推荐的 LTS (长期支持) 版本。 2. 安装 Claude Code 打开你的终端（Windows 用户使用 PowerShell，Mac/Linux 用户使用 Terminal），输入以下命令并回车：
+codeBash
+npm install -g @anthropic-ai/claude-code 【原理讲解】 npm 是 Node.js 的包管理器。-g 参数代表“全局安装”，这意味着你可以在电脑的任何文件夹中使用 claude 命令。
+3. 启动与初始化 创建项目文件夹： 在你希望的位置创建一个新文件夹（例如 my-first-app），然后通过终端进入该文件夹。 启动 Claude Code： 在项目文件夹的终端中，输入 claude 并回车。 初始化项目： 启动后，立刻输入 /init 命令。 【至关重要】 /init 命令是与 Claude Code 高效协作的基石。它会扫描当前项目并创建一个 CLAUDE.md 文件。这个文件相当于 AI 的“项目记忆”，后续所有操作，AI 都会参考它来理解你的项目结构，确保它的行为与你的项目高度相关。
+...</p></div><footer class=entry-footer><span title='2025-11-17 17:20:00 +0800 +0800'>November 17, 2025</span>&nbsp;·&nbsp;<span>您的姓名</span></footer><a class=entry-link aria-label="post link to Claude Code 常用命令使用解析" href=http://ljj1992.fun/posts/claudecode%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/></a></article><article class=post-entry><header class=entry-header><h2>Java内存马-监听器</h2></header><div class=entry-content><p>Java内存马-监听器 以下内容仅限Java小白，高手无视就可以
 一、 Java 监听器到底有啥用？ 你可以把监听器想象成“保安”或者“监控摄像头”。 在 Web 应用里，有三件大事经常发生：
 应用启动 / 关闭（ServletContext） 用户登录 / 退出（HttpSession） 每次发请求 / 请求结束（ServletRequest） 监听器就是提前注册好，告诉系统：“一旦发生上面这些事，就立刻通知我，让我执行一段代码”。
 比如：
