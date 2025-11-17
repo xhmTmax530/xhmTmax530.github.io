@@ -144,4 +144,41 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; echo &lt;span style="color:#e6db74"&gt;&amp;#34;Lists updated successfully.&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;VPS (/etc/wireguard/wg0.conf)&lt;/strong&gt; - (此部分无变化):&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;&lt;strong&gt;VPS (/etc/wireguard/wg0.conf)&lt;/strong&gt; - (此部分无变化):&lt;/p&gt;</description></item><item><title/><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;---
+title: &amp;#34;Java内存马 - 监听器型&amp;#34; # 新文章标题
+date: 2025-11-16T20:10:00+08:00 # 请根据你创建的实际时间修改
+draft: false
+categories: [&amp;#34;网络安全&amp;#34;] # 🎯 关键：设置为目标分类
+tags: [&amp;#34;网络安全&amp;#34;, &amp;#34;Java&amp;#34;, &amp;#34;内存马&amp;#34;] # 建议添加一些相关标签
+mermaid: true # ⭐ 关键：启用 Mermaid 图表支持
+---
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id="java内存马-监听器"&gt;Java内存马-监听器&lt;/h1&gt;
+&lt;p&gt;以下内容仅限Java小白，高手无视就可以&lt;/p&gt;
+&lt;h2 id="一-java-监听器到底有啥用"&gt;一、 Java 监听器到底有啥用？&lt;/h2&gt;
+&lt;p&gt;你可以把监听器想象成“保安”或者“监控摄像头”。
+在 Web 应用里，有三件大事经常发生：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用启动 / 关闭（ServletContext）&lt;/li&gt;
+&lt;li&gt;用户登录 / 退出（HttpSession）&lt;/li&gt;
+&lt;li&gt;每次发请求 / 请求结束（ServletRequest）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;监听器就是提前注册好，告诉系统：“一旦发生上面这些事，就立刻通知我，让我执行一段代码”。&lt;/p&gt;
+&lt;p&gt;比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用启动时，自动创建数据库连接池；&lt;/li&gt;
+&lt;li&gt;用户登录时，记录日志；&lt;/li&gt;
+&lt;li&gt;每次请求到来时，检查是否携带了合法的 token。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这样就把“业务逻辑”和“事件”分开，代码更清晰，也更容易扩展。&lt;/p&gt;
+&lt;h2 id="二-为什么监听器能变成内存马"&gt;二、 为什么监听器能变成“内存马”？&lt;/h2&gt;
+&lt;p&gt;内存马”就是黑客把一段恶意代码悄悄塞进正在运行的 Java 应用里，让它像木马一样长期潜伏，即使服务器重启也不会消失（因为代码已经加载到内存）。
+监听器之所以容易被利用，是因为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;它能在&lt;strong&gt;每次请求&lt;/strong&gt;或&lt;strong&gt;应用启动&lt;/strong&gt;时自动执行；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;只要能往 &lt;code&gt;web.xml&lt;/code&gt; 里加一行配置，或者用注解 &lt;code&gt;@WebListener&lt;/code&gt;，就能让这段代码生效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;黑客把恶意逻辑写在监听器的回调方法里，就能在不修改原有业务代码的情况下，偷偷执行命令、回弹 shell 等。&lt;/p&gt;</description></item></channel></rss>
