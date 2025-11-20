@@ -1,0 +1,275 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>star徐的博客</title><meta name=keywords content><meta name=description content='注解和Map
+把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。
+🎯 目标：
+我们想做一个“用户信息校验”功能，比如：
+
+用户名不能超过10个字符
+年龄必须在18到60之间
+邮箱必须包含 @ 符号
+
+但我们不想把规则写死在代码里，而是用注解来定义规则，然后程序运行时通过Map来存储这些规则，进行动态校验。
+
+✅ 第一步：定义一个注解 @ValidationRule
+import java.lang.annotation.*;
+
+// 这个注解可以加在字段（field）上
+@Target(ElementType.FIELD)
+// 注解信息要保留到运行时，才能用反射读取
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ValidationRule {
+    
+    // 规则类型：比如 "maxLength", "minValue", "pattern" 等
+    String type();
+    
+    // 规则的值，比如最大长度是10，最小年龄是18
+    int value() default 0;
+    
+    // 用于正则匹配的字符串，比如邮箱格式
+    String pattern() default "";
+    
+    // 错误提示信息
+    String message() default "该字段不符合规则";
+}
+🔍 逐行解释：
+
+
+@Target(ElementType.FIELD)：说明这个注解只能用在“字段”上，比如类里的变量。
+
+
+@Retention(RetentionPolicy.RUNTIME)：表示这个注解在程序运行时还能被读取（靠反射）。
+
+
+public @interface ValidationRule：声明一个叫 ValidationRule 的注解（不是类！是标签）。
+
+
+String type()：定义一个叫 type 的属性，用来表示规则类型，比如 "maxLength"。
+
+
+int value() default 0：定义一个整数型规则值，比如最大长度是10，不写就默认是0。
+
+
+String pattern()：用于正则表达式，比如邮箱格式 ".*@.*\\.com"。'><meta name=author content="您的姓名"><link rel=canonical href=http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/><link crossorigin=anonymous href=/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css integrity="sha256-NDzEgLn/yPBMy+XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as=style><link rel=icon href=http://ljj1992.fun/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://ljj1992.fun/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://ljj1992.fun/favicon-32x32.png><link rel=apple-touch-icon href=http://ljj1992.fun/apple-touch-icon.png><link rel=mask-icon href=http://ljj1992.fun/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/"><meta property="og:site_name" content="star徐的博客"><meta property="og:title" content="star徐的博客"><meta property="og:description" content='注解和Map 把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。
+🎯 目标： 我们想做一个“用户信息校验”功能，比如：
+用户名不能超过10个字符 年龄必须在18到60之间 邮箱必须包含 @ 符号 但我们不想把规则写死在代码里，而是用注解来定义规则，然后程序运行时通过Map来存储这些规则，进行动态校验。
+✅ 第一步：定义一个注解 @ValidationRule import java.lang.annotation.*; // 这个注解可以加在字段（field）上 @Target(ElementType.FIELD) // 注解信息要保留到运行时，才能用反射读取 @Retention(RetentionPolicy.RUNTIME) public @interface ValidationRule { // 规则类型：比如 "maxLength", "minValue", "pattern" 等 String type(); // 规则的值，比如最大长度是10，最小年龄是18 int value() default 0; // 用于正则匹配的字符串，比如邮箱格式 String pattern() default ""; // 错误提示信息 String message() default "该字段不符合规则"; } 🔍 逐行解释：
+@Target(ElementType.FIELD)：说明这个注解只能用在“字段”上，比如类里的变量。
+@Retention(RetentionPolicy.RUNTIME)：表示这个注解在程序运行时还能被读取（靠反射）。
+public @interface ValidationRule：声明一个叫 ValidationRule 的注解（不是类！是标签）。
+String type()：定义一个叫 type 的属性，用来表示规则类型，比如 "maxLength"。
+int value() default 0：定义一个整数型规则值，比如最大长度是10，不写就默认是0。
+String pattern()：用于正则表达式，比如邮箱格式 ".*@.*\\.com"。'><meta property="og:locale" content="zh-cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta name=twitter:card content="summary"><meta name=twitter:title content><meta name=twitter:description content='注解和Map
+把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。
+🎯 目标：
+我们想做一个“用户信息校验”功能，比如：
+
+用户名不能超过10个字符
+年龄必须在18到60之间
+邮箱必须包含 @ 符号
+
+但我们不想把规则写死在代码里，而是用注解来定义规则，然后程序运行时通过Map来存储这些规则，进行动态校验。
+
+✅ 第一步：定义一个注解 @ValidationRule
+import java.lang.annotation.*;
+
+// 这个注解可以加在字段（field）上
+@Target(ElementType.FIELD)
+// 注解信息要保留到运行时，才能用反射读取
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ValidationRule {
+    
+    // 规则类型：比如 "maxLength", "minValue", "pattern" 等
+    String type();
+    
+    // 规则的值，比如最大长度是10，最小年龄是18
+    int value() default 0;
+    
+    // 用于正则匹配的字符串，比如邮箱格式
+    String pattern() default "";
+    
+    // 错误提示信息
+    String message() default "该字段不符合规则";
+}
+🔍 逐行解释：
+
+
+@Target(ElementType.FIELD)：说明这个注解只能用在“字段”上，比如类里的变量。
+
+
+@Retention(RetentionPolicy.RUNTIME)：表示这个注解在程序运行时还能被读取（靠反射）。
+
+
+public @interface ValidationRule：声明一个叫 ValidationRule 的注解（不是类！是标签）。
+
+
+String type()：定义一个叫 type 的属性，用来表示规则类型，比如 "maxLength"。
+
+
+int value() default 0：定义一个整数型规则值，比如最大长度是10，不写就默认是0。
+
+
+String pattern()：用于正则表达式，比如邮箱格式 ".*@.*\\.com"。'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://ljj1992.fun/posts/"},{"@type":"ListItem","position":2,"name":"","item":"http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"注解和Map 把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。\n🎯 目标： 我们想做一个“用户信息校验”功能，比如：\n用户名不能超过10个字符 年龄必须在18到60之间 邮箱必须包含 @ 符号 但我们不想把规则写死在代码里，而是用注解来定义规则，然后程序运行时通过Map来存储这些规则，进行动态校验。\n✅ 第一步：定义一个注解 @ValidationRule import java.lang.annotation.*; // 这个注解可以加在字段（field）上 @Target(ElementType.FIELD) // 注解信息要保留到运行时，才能用反射读取 @Retention(RetentionPolicy.RUNTIME) public @interface ValidationRule { // 规则类型：比如 \u0026#34;maxLength\u0026#34;, \u0026#34;minValue\u0026#34;, \u0026#34;pattern\u0026#34; 等 String type(); // 规则的值，比如最大长度是10，最小年龄是18 int value() default 0; // 用于正则匹配的字符串，比如邮箱格式 String pattern() default \u0026#34;\u0026#34;; // 错误提示信息 String message() default \u0026#34;该字段不符合规则\u0026#34;; } 🔍 逐行解释：\n@Target(ElementType.FIELD)：说明这个注解只能用在“字段”上，比如类里的变量。\n@Retention(RetentionPolicy.RUNTIME)：表示这个注解在程序运行时还能被读取（靠反射）。\npublic @interface ValidationRule：声明一个叫 ValidationRule 的注解（不是类！是标签）。\nString type()：定义一个叫 type 的属性，用来表示规则类型，比如 \u0026quot;maxLength\u0026quot;。\nint value() default 0：定义一个整数型规则值，比如最大长度是10，不写就默认是0。\nString pattern()：用于正则表达式，比如邮箱格式 \u0026quot;.*@.*\\\\.com\u0026quot;。\n","keywords":[],"articleBody":"注解和Map 把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。\n🎯 目标： 我们想做一个“用户信息校验”功能，比如：\n用户名不能超过10个字符 年龄必须在18到60之间 邮箱必须包含 @ 符号 但我们不想把规则写死在代码里，而是用注解来定义规则，然后程序运行时通过Map来存储这些规则，进行动态校验。\n✅ 第一步：定义一个注解 @ValidationRule import java.lang.annotation.*; // 这个注解可以加在字段（field）上 @Target(ElementType.FIELD) // 注解信息要保留到运行时，才能用反射读取 @Retention(RetentionPolicy.RUNTIME) public @interface ValidationRule { // 规则类型：比如 \"maxLength\", \"minValue\", \"pattern\" 等 String type(); // 规则的值，比如最大长度是10，最小年龄是18 int value() default 0; // 用于正则匹配的字符串，比如邮箱格式 String pattern() default \"\"; // 错误提示信息 String message() default \"该字段不符合规则\"; } 🔍 逐行解释：\n@Target(ElementType.FIELD)：说明这个注解只能用在“字段”上，比如类里的变量。\n@Retention(RetentionPolicy.RUNTIME)：表示这个注解在程序运行时还能被读取（靠反射）。\npublic @interface ValidationRule：声明一个叫 ValidationRule 的注解（不是类！是标签）。\nString type()：定义一个叫 type 的属性，用来表示规则类型，比如 \"maxLength\"。\nint value() default 0：定义一个整数型规则值，比如最大长度是10，不写就默认是0。\nString pattern()：用于正则表达式，比如邮箱格式 \".*@.*\\\\.com\"。\nString message()：出错时显示的提示语。\nString message()：出错时显示的提示语。\n✅ 第二步：创建一个用户类，用注解标注字段规则 public class User { @ValidationRule( type = \"maxLength\", value = 10, message = \"用户名不能超过10个字符\" ) private String username; @ValidationRule( type = \"minValue\", value = 18, message = \"年龄不能小于18\" ) @ValidationRule( type = \"maxValue\", value = 60, message = \"年龄不能大于60\" ) private int age; @ValidationRule( type = \"pattern\", pattern = \".*@.*\\\\.com\", message = \"邮箱必须包含@且以.com结尾\" ) private String email; // 构造方法 public User(String username, int age, String email) { this.username = username; this.age = age; this.email = email; } // getter 方法，方便外部读取字段 public String getUsername() { return username; } public int getAge() { return age; } public String getEmail() { return email; } } 🔍 解释：\n我们给 username、age、email 字段都加上了 @ValidationRule 注解。 每个注解都写了具体的规则（type、value、pattern、message）。 注意：age 有两个注解，一个限制最小值，一个最大值，Java 是允许一个字段加多个注解的！ ✅ 第三步：写一个校验器，把注解信息读出来，存进 Map，然后做校验 import java.lang.reflect.Field; import java.util.*; public class Validator { // 校验任意对象的方法 public static List\u003cString\u003e validate(Object obj) { List\u003cString\u003e errors = new ArrayList\u003c\u003e(); // 存放所有错误信息 // 获取这个对象的类结构（反射） Class\u003c?\u003e clazz = obj.getClass(); // 获取类里的所有字段（比如 username, age, email） Field[] fields = clazz.getDeclaredFields(); // 遍历每个字段 for (Field field : fields) { // 打开权限，让我们可以访问 private 字段 field.setAccessible(true); // 获取这个字段上的所有 @ValidationRule 注解 ValidationRule[] rules = field.getAnnotationsByType(ValidationRule.class); // 如果这个字段没有注解，跳过 if (rules.length == 0) continue; // 获取字段的当前值，比如 username 的值是 \"zhangsan\" Object value = null; try { value = field.get(obj); // 获取字段的实际值 } catch (IllegalAccessException e) { errors.add(field.getName() + \" 字段无法访问\"); continue; } // 把这个字段的所有规则放进一个 Map，方便查找和处理 Map\u003cString, Object\u003e ruleMap = new HashMap\u003c\u003e(); for (ValidationRule rule : rules) { // 把每个规则的 type 作为 key，整个注解对象作为 value ruleMap.put(rule.type(), rule); } // 开始根据规则校验 for (ValidationRule rule : rules) { String type = rule.type(); String msg = rule.message(); switch (type) { case \"maxLength\": if (value instanceof String \u0026\u0026 ((String) value).length() \u003e rule.value()) { errors.add(msg); } break; case \"minValue\": if (value instanceof Integer \u0026\u0026 (int) value \u003c rule.value()) { errors.add(msg); } break; case \"maxValue\": if (value instanceof Integer \u0026\u0026 (int) value \u003e rule.value()) { errors.add(msg); } break; case \"pattern\": if (value instanceof String \u0026\u0026 !((String) value).matches(rule.pattern())) { errors.add(msg); } break; } } } return errors; // 返回所有错误信息 } } 🔍 重点解释：\nfield.getAnnotationsByType(...)：反射读取字段上的所有 @ValidationRule 注解。\nMap ruleMap：我们把每个规则的 type（如 \"maxLength\"）作为 key，把整个注解对象存进去。这就是“注解 → Map”的典型用法！\n为什么要用 Map？因为后面查规则更快，比如你想知道有没有 minValue 规则，直接 ruleMap.containsKey(\"minValue\") 就行。\nswitch (type)：根据规则类型做不同的校验。\nerrors：收集所有错误提示，最后一起返回。\nerrors：收集所有错误提示，最后一起返回。\n✅ 第四步：测试代码 public class Main { public static void main(String[] args) { // 创建一个“有问题”的用户 User user = new User(\"zhangsan123\", 16, \"abc@163.net\"); // 调用校验器 List\u003cString\u003e result = Validator.validate(user); // 输出结果 if (result.isEmpty()) { System.out.println(\"✅ 校验通过！\"); } else { System.out.println(\"❌ 校验失败：\"); for (String error : result) { System.out.println(\" - \" + error); } } } } 📌 运行结果：\n❌ 校验失败： - 用户名不能超过10个字符 - 年龄不能小于18 - 邮箱必须包含@且以.com结尾 ✅ 总结：注解 + Map 的好处 优点 说明 ✅ 解耦 校验规则写在注解里，校验逻辑在 Validator 里，改规则不用动代码 ✅ 可读性强 看字段就知道它有哪些限制 ✅ 灵活扩展 想加新规则（比如 required），只需加个 type 就行 ✅ Map 提高效率 把注解信息转成 Map，方便快速查找和管理 💡 最后一句话： 注解是“贴在代码上的标签”，Map 是“运行时的规则仓库”。 我们用注解声明规则，用反射读取注解，再把它们放进 Map 动态处理——这就是现代 Java 框架（如 Spring、Hibernate）的常用套路！\n","wordCount":"522","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"您的姓名"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/"},"publisher":{"@type":"Organization","name":"star徐的博客","logo":{"@type":"ImageObject","url":"http://ljj1992.fun/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=http://ljj1992.fun/ accesskey=h title="star徐的博客 (Alt + H)">star徐的博客</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=http://ljj1992.fun/ title=首页><span>首页</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://ljj1992.fun/>Home</a>&nbsp;»&nbsp;<a href=http://ljj1992.fun/posts/>Posts</a></div><h1 class="post-title entry-hint-parent"></h1><div class=post-meta><span>您的姓名</span></div></header><div class=post-content><h1 id=注解和map>注解和Map<a hidden class=anchor aria-hidden=true href=#注解和map>#</a></h1><p>把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。</p><h3 id=-目标>🎯 目标：<a hidden class=anchor aria-hidden=true href=#-目标>#</a></h3><p>我们想做一个“用户信息校验”功能，比如：</p><ul><li>用户名不能超过10个字符</li><li>年龄必须在18到60之间</li><li>邮箱必须包含 @ 符号</li></ul><p>但我们不想把规则写死在代码里，而是用<strong>注解</strong>来定义规则，然后程序运行时通过<strong>Map</strong>来存储这些规则，进行动态校验。</p><hr><h3 id=-第一步定义一个注解-validationrule>✅ 第一步：定义一个注解 <code>@ValidationRule</code><a hidden class=anchor aria-hidden=true href=#-第一步定义一个注解-validationrule>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#f92672>import</span> java.lang.annotation.*;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 这个注解可以加在字段（field）上</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@Target</span>(ElementType.<span style=color:#a6e22e>FIELD</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// 注解信息要保留到运行时，才能用反射读取</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@Retention</span>(RetentionPolicy.<span style=color:#a6e22e>RUNTIME</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#a6e22e>@interface</span> ValidationRule {
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 规则类型：比如 &#34;maxLength&#34;, &#34;minValue&#34;, &#34;pattern&#34; 等</span>
+</span></span><span style=display:flex><span>    String <span style=color:#a6e22e>type</span>();
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 规则的值，比如最大长度是10，最小年龄是18</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>value</span>() <span style=color:#66d9ef>default</span> 0;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 用于正则匹配的字符串，比如邮箱格式</span>
+</span></span><span style=display:flex><span>    String <span style=color:#a6e22e>pattern</span>() <span style=color:#66d9ef>default</span> <span style=color:#e6db74>&#34;&#34;</span>;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 错误提示信息</span>
+</span></span><span style=display:flex><span>    String <span style=color:#a6e22e>message</span>() <span style=color:#66d9ef>default</span> <span style=color:#e6db74>&#34;该字段不符合规则&#34;</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>🔍 <strong>逐行解释：</strong></p><ul><li><p><code>@Target(ElementType.FIELD)</code>：说明这个注解只能用在“字段”上，比如类里的变量。</p></li><li><p><code>@Retention(RetentionPolicy.RUNTIME)</code>：表示这个注解在程序运行时还能被读取（靠反射）。</p></li><li><p><code>public @interface ValidationRule</code>：声明一个叫 <code>ValidationRule</code> 的注解（不是类！是标签）。</p></li><li><p><code>String type()</code>：定义一个叫 <code>type</code> 的属性，用来表示规则类型，比如 <code>"maxLength"</code>。</p></li><li><p><code>int value() default 0</code>：定义一个整数型规则值，比如最大长度是10，不写就默认是0。</p></li><li><p><code>String pattern()</code>：用于正则表达式，比如邮箱格式 <code>".*@.*\\.com"</code>。</p></li><li><p><code>String message()</code>：出错时显示的提示语。</p></li><li><p><code>String message()</code>：出错时显示的提示语。</p></li></ul><hr><h3 id=-第二步创建一个用户类用注解标注字段规则>✅ 第二步：创建一个用户类，用注解标注字段规则<a hidden class=anchor aria-hidden=true href=#-第二步创建一个用户类用注解标注字段规则>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>User</span> {
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@ValidationRule</span>(
+</span></span><span style=display:flex><span>        type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;maxLength&#34;</span>, 
+</span></span><span style=display:flex><span>        value <span style=color:#f92672>=</span> 10, 
+</span></span><span style=display:flex><span>        message <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;用户名不能超过10个字符&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> String username;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@ValidationRule</span>(
+</span></span><span style=display:flex><span>        type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;minValue&#34;</span>, 
+</span></span><span style=display:flex><span>        value <span style=color:#f92672>=</span> 18, 
+</span></span><span style=display:flex><span>        message <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;年龄不能小于18&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@ValidationRule</span>(
+</span></span><span style=display:flex><span>        type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;maxValue&#34;</span>, 
+</span></span><span style=display:flex><span>        value <span style=color:#f92672>=</span> 60, 
+</span></span><span style=display:flex><span>        message <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;年龄不能大于60&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> age;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@ValidationRule</span>(
+</span></span><span style=display:flex><span>        type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;pattern&#34;</span>, 
+</span></span><span style=display:flex><span>        pattern <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;.*@.*\\.com&#34;</span>, 
+</span></span><span style=display:flex><span>        message <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;邮箱必须包含@且以.com结尾&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> String email;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 构造方法</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>User</span>(String username, <span style=color:#66d9ef>int</span> age, String email) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>username</span> <span style=color:#f92672>=</span> username;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>age</span> <span style=color:#f92672>=</span> age;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>email</span> <span style=color:#f92672>=</span> email;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// getter 方法，方便外部读取字段</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>getUsername</span>() { <span style=color:#66d9ef>return</span> username; }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getAge</span>() { <span style=color:#66d9ef>return</span> age; }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>getEmail</span>() { <span style=color:#66d9ef>return</span> email; }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>🔍 <strong>解释：</strong></p><ul><li>我们给 <code>username</code>、<code>age</code>、<code>email</code> 字段都加上了 <code>@ValidationRule</code> 注解。</li><li>每个注解都写了具体的规则（type、value、pattern、message）。</li><li>注意：<code>age</code> 有两个注解，一个限制最小值，一个最大值，Java 是允许一个字段加多个注解的！</li></ul><hr><h3 id=-第三步写一个校验器把注解信息读出来存进-map然后做校验>✅ 第三步：写一个校验器，把注解信息读出来，存进 Map，然后做校验<a hidden class=anchor aria-hidden=true href=#-第三步写一个校验器把注解信息读出来存进-map然后做校验>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#f92672>import</span> java.lang.reflect.Field;
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> java.util.*;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Validator</span> {
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 校验任意对象的方法</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> List<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>validate</span>(Object obj) {
+</span></span><span style=display:flex><span>        List<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> errors <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;</span>();  <span style=color:#75715e>// 存放所有错误信息</span>
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 获取这个对象的类结构（反射）</span>
+</span></span><span style=display:flex><span>        Class<span style=color:#f92672>&lt;?&gt;</span> clazz <span style=color:#f92672>=</span> obj.<span style=color:#a6e22e>getClass</span>();
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 获取类里的所有字段（比如 username, age, email）</span>
+</span></span><span style=display:flex><span>        Field<span style=color:#f92672>[]</span> fields <span style=color:#f92672>=</span> clazz.<span style=color:#a6e22e>getDeclaredFields</span>();
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 遍历每个字段</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (Field field : fields) {
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 打开权限，让我们可以访问 private 字段</span>
+</span></span><span style=display:flex><span>            field.<span style=color:#a6e22e>setAccessible</span>(<span style=color:#66d9ef>true</span>);
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 获取这个字段上的所有 @ValidationRule 注解</span>
+</span></span><span style=display:flex><span>            ValidationRule<span style=color:#f92672>[]</span> rules <span style=color:#f92672>=</span> field.<span style=color:#a6e22e>getAnnotationsByType</span>(ValidationRule.<span style=color:#a6e22e>class</span>);
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 如果这个字段没有注解，跳过</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> (rules.<span style=color:#a6e22e>length</span> <span style=color:#f92672>==</span> 0) <span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 获取字段的当前值，比如 username 的值是 &#34;zhangsan&#34;</span>
+</span></span><span style=display:flex><span>            Object value <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span>;
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>try</span> {
+</span></span><span style=display:flex><span>                value <span style=color:#f92672>=</span> field.<span style=color:#a6e22e>get</span>(obj);  <span style=color:#75715e>// 获取字段的实际值</span>
+</span></span><span style=display:flex><span>            } <span style=color:#66d9ef>catch</span> (IllegalAccessException e) {
+</span></span><span style=display:flex><span>                errors.<span style=color:#a6e22e>add</span>(field.<span style=color:#a6e22e>getName</span>() <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; 字段无法访问&#34;</span>);
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 把这个字段的所有规则放进一个 Map，方便查找和处理</span>
+</span></span><span style=display:flex><span>            Map<span style=color:#f92672>&lt;</span>String, Object<span style=color:#f92672>&gt;</span> ruleMap <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashMap<span style=color:#f92672>&lt;&gt;</span>();
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> (ValidationRule rule : rules) {
+</span></span><span style=display:flex><span>                <span style=color:#75715e>// 把每个规则的 type 作为 key，整个注解对象作为 value</span>
+</span></span><span style=display:flex><span>                ruleMap.<span style=color:#a6e22e>put</span>(rule.<span style=color:#a6e22e>type</span>(), rule);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// 开始根据规则校验</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> (ValidationRule rule : rules) {
+</span></span><span style=display:flex><span>                String type <span style=color:#f92672>=</span> rule.<span style=color:#a6e22e>type</span>();
+</span></span><span style=display:flex><span>                String msg <span style=color:#f92672>=</span> rule.<span style=color:#a6e22e>message</span>();
+</span></span><span style=display:flex><span>                
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>switch</span> (type) {
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;maxLength&#34;</span>:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>if</span> (value <span style=color:#66d9ef>instanceof</span> String <span style=color:#f92672>&amp;&amp;</span> ((String) value).<span style=color:#a6e22e>length</span>() <span style=color:#f92672>&gt;</span> rule.<span style=color:#a6e22e>value</span>()) {
+</span></span><span style=display:flex><span>                            errors.<span style=color:#a6e22e>add</span>(msg);
+</span></span><span style=display:flex><span>                        }
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;minValue&#34;</span>:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>if</span> (value <span style=color:#66d9ef>instanceof</span> Integer <span style=color:#f92672>&amp;&amp;</span> (<span style=color:#66d9ef>int</span>) value <span style=color:#f92672>&lt;</span> rule.<span style=color:#a6e22e>value</span>()) {
+</span></span><span style=display:flex><span>                            errors.<span style=color:#a6e22e>add</span>(msg);
+</span></span><span style=display:flex><span>                        }
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;maxValue&#34;</span>:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>if</span> (value <span style=color:#66d9ef>instanceof</span> Integer <span style=color:#f92672>&amp;&amp;</span> (<span style=color:#66d9ef>int</span>) value <span style=color:#f92672>&gt;</span> rule.<span style=color:#a6e22e>value</span>()) {
+</span></span><span style=display:flex><span>                            errors.<span style=color:#a6e22e>add</span>(msg);
+</span></span><span style=display:flex><span>                        }
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;pattern&#34;</span>:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>if</span> (value <span style=color:#66d9ef>instanceof</span> String <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span>((String) value).<span style=color:#a6e22e>matches</span>(rule.<span style=color:#a6e22e>pattern</span>())) {
+</span></span><span style=display:flex><span>                            errors.<span style=color:#a6e22e>add</span>(msg);
+</span></span><span style=display:flex><span>                        }
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> errors;  <span style=color:#75715e>// 返回所有错误信息</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>🔍 <strong>重点解释：</strong></p><ul><li><p><code>field.getAnnotationsByType(...)</code>：反射读取字段上的所有 <code>@ValidationRule</code> 注解。</p></li><li><p><code>Map&lt;String, Object> ruleMap</code>：我们把每个规则的 <code>type</code>（如 <code>"maxLength"</code>）作为 key，把整个注解对象存进去。这就是“注解 → Map”的典型用法！</p></li><li><p>为什么要用 Map？因为后面查规则更快，比如你想知道有没有 <code>minValue</code> 规则，直接 <code>ruleMap.containsKey("minValue")</code> 就行。</p></li><li><p><code>switch (type)</code>：根据规则类型做不同的校验。</p></li><li><p><code>errors</code>：收集所有错误提示，最后一起返回。</p></li><li><p><code>errors</code>：收集所有错误提示，最后一起返回。</p></li></ul><hr><h3 id=-第四步测试代码>✅ 第四步：测试代码<a hidden class=anchor aria-hidden=true href=#-第四步测试代码>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Main</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span>(String<span style=color:#f92672>[]</span> args) {
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 创建一个“有问题”的用户</span>
+</span></span><span style=display:flex><span>        User user <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> User(<span style=color:#e6db74>&#34;zhangsan123&#34;</span>, 16, <span style=color:#e6db74>&#34;abc@163.net&#34;</span>);
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 调用校验器</span>
+</span></span><span style=display:flex><span>        List<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> result <span style=color:#f92672>=</span> Validator.<span style=color:#a6e22e>validate</span>(user);
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// 输出结果</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (result.<span style=color:#a6e22e>isEmpty</span>()) {
+</span></span><span style=display:flex><span>            System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;✅ 校验通过！&#34;</span>);
+</span></span><span style=display:flex><span>        } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>            System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;❌ 校验失败：&#34;</span>);
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> (String error : result) {
+</span></span><span style=display:flex><span>                System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;  - &#34;</span> <span style=color:#f92672>+</span> error);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>📌 <strong>运行结果：</strong></p><pre tabindex=0><code>❌ 校验失败：
+  - 用户名不能超过10个字符
+  - 年龄不能小于18
+  - 邮箱必须包含@且以.com结尾
+</code></pre><hr><h3 id=-总结注解--map-的好处>✅ 总结：注解 + Map 的好处<a hidden class=anchor aria-hidden=true href=#-总结注解--map-的好处>#</a></h3><table><thead><tr><th>优点</th><th>说明</th></tr></thead><tbody><tr><td>✅ <strong>解耦</strong></td><td>校验规则写在注解里，校验逻辑在 <code>Validator</code> 里，改规则不用动代码</td></tr><tr><td>✅ <strong>可读性强</strong></td><td>看字段就知道它有哪些限制</td></tr><tr><td>✅ <strong>灵活扩展</strong></td><td>想加新规则（比如 <code>required</code>），只需加个 <code>type</code> 就行</td></tr><tr><td>✅ <strong>Map 提高效率</strong></td><td>把注解信息转成 Map，方便快速查找和管理</td></tr></tbody></table><hr><h3 id=-最后一句话>💡 最后一句话：<a hidden class=anchor aria-hidden=true href=#-最后一句话>#</a></h3><p><strong>注解是“贴在代码上的标签”，Map 是“运行时的规则仓库”</strong>。
+我们用注解声明规则，用反射读取注解，再把它们放进 Map 动态处理——这就是现代 Java 框架（如 Spring、Hibernate）的常用套路！</p></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=http://ljj1992.fun/>star徐的博客</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
