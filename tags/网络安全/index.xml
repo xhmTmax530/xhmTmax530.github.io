@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>网络安全 on star徐的博客</title><link>http://ljj1992.fun/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link><description>Recent content in 网络安全 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Mon, 17 Nov 2025 16:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>Java内存马-监听器</title><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 17 Nov 2025 16:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;h1 id="java内存马-监听器"&gt;Java内存马-监听器&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>网络安全 on star徐的博客</title><link>http://ljj1992.fun/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link><description>Recent content in 网络安全 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 12:44:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>JNDI注入</title><link>http://ljj1992.fun/posts/jndi%E6%B3%A8%E5%85%A5/</link><pubDate>Fri, 21 Nov 2025 12:44:00 +0800</pubDate><guid>http://ljj1992.fun/posts/jndi%E6%B3%A8%E5%85%A5/</guid><description>&lt;h1 id="jndi注入"&gt;JNDI注入&lt;/h1&gt;
+&lt;h2 id="什么是内存马"&gt;&lt;strong&gt;什么是内存马&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;内存马是一段仅驻留在服务器内存中的恶意代码，它不写入磁盘文件，因此传统基于文件扫描的杀毒软件很难发现。在 Java 里，它通常表现为一个被动态加载到 JVM 内存中的恶意类，可以接收远程指令、执行任意命令或窃取敏感数据。&lt;/p&gt;
+&lt;h2 id="内存马常见类别"&gt;&lt;strong&gt;内存马常见类别&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;• Servlet 型：通过篡改或新增 Servlet、Filter、Listener 实现流量拦截与命令执行。
+• Agent 型：利用 Java Instrumentation API 在运行时修改已有类的字节码，植入后门。
+• 动态代理/反射型：通过 Proxy、InvocationHandler 或反射机制把恶意逻辑挂接到正常业务流程中。
+• 代码执行型：借助脚本引擎（如 Nashorn、Groovy）把恶意脚本直接加载到内存并执行&lt;/p&gt;
+&lt;h2 id="为什么会存在内存马"&gt;&lt;strong&gt;为什么会存在内存马&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;根本原因在于 Java 的“动态性”：
+• 类可以在运行时从网络、数据库或其他非文件源加载；
+• 字节码可以被 Instrumentation API 在运行时修改；
+• 反射和动态代理允许在不改动源码的前提下改变程序行为。
+攻击者正是利用这些特性，把恶意代码“注入”到正在运行的 JVM 里，而不留下任何文件痕迹。&lt;/p&gt;
+&lt;h2 id="java-架构如何助长内存马"&gt;&lt;strong&gt;Java 架构如何助长内存马&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;• JVM 的类加载机制是“按需加载”，运行时可随时从任意来源读取字节码并定义成类；
+• 运行时数据区（堆、方法区等）对动态生成的类和对象没有额外限制；
+• “沙箱”模型只在早期 Applet 时代严格实施，现代服务器应用往往以全权模式运行，一旦获得 ClassLoader 或 Instrumentation 实例，就能突破信任边界。
+因此，只要攻击者拿到能够动态加载或修改字节码的入口（如反序列化漏洞、JNDI 注入、Groovy 脚本执行等），就能把恶意逻辑直接塞进内存，形成无文件驻留。&lt;/p&gt;
+&lt;p&gt;一句话总结：内存马的本质是“把恶意代码当成普通 Java 类一样加载到内存并执行”，它之所以能成为“无文件”，正是因为 Java 的类加载、字节码改写和反射机制允许在不落地文件的前提下完成整个攻击链。&lt;/p&gt;
+&lt;h2 id="一什么是jndi注入"&gt;一、什么是JNDI注入&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;JNDI为什么会成为黑客的工具&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="11-一句话区分"&gt;1.1 &lt;strong&gt;一句话区分：&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;JNDI 注入是黑客把“资源查找”这把正经钥匙，拧成了撬锁的铁丝。&lt;/p&gt;</description></item><item><title>Java内存马-监听器</title><link>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</link><pubDate>Mon, 17 Nov 2025 16:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/java%E5%86%85%E5%AD%98%E9%A9%AC-%E7%9B%91%E5%90%AC%E5%99%A8/</guid><description>&lt;h1 id="java内存马-监听器"&gt;Java内存马-监听器&lt;/h1&gt;
 &lt;p&gt;以下内容仅限Java小白，高手无视就可以&lt;/p&gt;
 &lt;h2 id="一-java-监听器到底有啥用"&gt;一、 Java 监听器到底有啥用？&lt;/h2&gt;
 &lt;p&gt;你可以把监听器想象成“保安”或者“监控摄像头”。
