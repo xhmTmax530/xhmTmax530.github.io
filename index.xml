@@ -1,4 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>star徐的博客</title><link>http://ljj1992.fun/</link><description>Recent content on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Thu, 20 Nov 2025 15:36:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/index.xml" rel="self" type="application/rss+xml"/><item><title>观察者模式(YouTuber订阅)</title><link>http://ljj1992.fun/posts/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 20 Nov 2025 15:36:00 +0800</pubDate><guid>http://ljj1992.fun/posts/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h1 id="观察者模式youtuber订阅"&gt;观察者模式(YouTuber订阅)&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>star徐的博客</title><link>http://ljj1992.fun/</link><description>Recent content on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 10:50:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/index.xml" rel="self" type="application/rss+xml"/><item><title>注解和Map(新手理解)</title><link>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</link><pubDate>Fri, 21 Nov 2025 10:50:00 +0800</pubDate><guid>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</guid><description>&lt;h1 id="注解和map新手理解"&gt;注解和Map(新手理解)&lt;/h1&gt;
+&lt;p&gt;把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。&lt;/p&gt;
+&lt;p&gt;Map 就是“映射”的意思，你可以把它想象成一张 Excel 表，只有两列：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一列叫“键”（Key）&lt;/li&gt;
+&lt;li&gt;第二列叫“值”（Value）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;只要给出一个 Key，就能立刻找到它对应的 Value。
+常见的 HashMap、TreeMap、LinkedHashMap 都是 Java 里对 Map 的具体实现，它们的共同接口就是 java.util.Map。&lt;/p&gt;
+&lt;p&gt;举个生活化的例子：
+如果你想用手机号（Key）查人名（Value），用 Map 就像查通讯录，输入号码就能秒回名字，不用从头翻到尾。&lt;/p&gt;
+&lt;h3 id="注解和-map-的关系"&gt;注解和 Map 的关系&lt;/h3&gt;
+&lt;p&gt;注解（Annotation）本质上是一段附加在类、方法或字段上的“元数据”。
+你可能觉得注解就是个标签，其实 JVM 在底层把每个注解都当成一个 Map 来存储：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注解里的每一个属性（比如 &lt;code&gt;@MyAnnotation(value=&amp;quot;test&amp;quot;, version=2)&lt;/code&gt; 中的 value、version）
+都会被放进一个 Map 里，key 就是属性名，value 就是属性值。&lt;/li&gt;
+&lt;li&gt;当你用反射调用 &lt;code&gt;method.getAnnotation(MyAnnotation.class)&lt;/code&gt; 时，JVM 会从这张“注解属性表”（也就是 Map）里把值取出来，再通过动态代理把它们返回给你。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以，&lt;strong&gt;注解在 JVM 眼里就是一张只读的键值表&lt;/strong&gt;——这正是 Map 最擅长的场景：
+灵活、可扩展、查询快，而且天然支持“属性名→属性值”的映射逻辑。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;一句话总结
+Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM 用 Map 来保存其属性，因此二者在底层确实是一家人。&lt;/p&gt;
+&lt;h2 id="一-目标"&gt;一、🎯 目标：&lt;/h2&gt;
+&lt;p&gt;我们想做一个“用户信息校验”功能，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户名不能超过10个字符&lt;/li&gt;
+&lt;li&gt;年龄必须在18到60之间&lt;/li&gt;
+&lt;li&gt;邮箱必须包含 @ 符号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但我们不想把规则写死在代码里，而是用&lt;strong&gt;注解&lt;/strong&gt;来定义规则，然后程序运行时通过&lt;strong&gt;Map&lt;/strong&gt;来存储这些规则，进行动态校验。&lt;/p&gt;</description></item><item><title>观察者模式(YouTuber订阅)</title><link>http://ljj1992.fun/posts/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 20 Nov 2025 15:36:00 +0800</pubDate><guid>http://ljj1992.fun/posts/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h1 id="观察者模式youtuber订阅"&gt;观察者模式(YouTuber订阅)&lt;/h1&gt;
 &lt;h2 id="一观察者模式到底是干嘛的为什么会有人发明它"&gt;一、观察者模式到底是干嘛的？为什么会有人发明它？&lt;/h2&gt;
 &lt;p&gt;想象一下现实生活中的场景：&lt;/p&gt;
 &lt;p&gt;你很喜欢某个YouTuber（比如“老王”），于是你点了一下“订阅”按钮。 以后老王每发一个新视频，YouTube 就会自动给你推送通知，你不用每时每刻去他的主页刷新看他发没发视频。&lt;/p&gt;
