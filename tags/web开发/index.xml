@@ -1,4 +1,83 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Web开发 on star徐的博客</title><link>http://ljj1992.fun/tags/web%E5%BC%80%E5%8F%91/</link><description>Recent content in Web开发 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 10:50:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml"/><item><title>注解和Map(新手理解)</title><link>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</link><pubDate>Fri, 21 Nov 2025 10:50:00 +0800</pubDate><guid>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</guid><description>&lt;h1 id="注解和map新手理解"&gt;注解和Map(新手理解)&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Web开发 on star徐的博客</title><link>http://ljj1992.fun/tags/web%E5%BC%80%E5%8F%91/</link><description>Recent content in Web开发 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Sun, 23 Nov 2025 18:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml"/><item><title>AOP切面(java新手)</title><link>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</link><pubDate>Sun, 23 Nov 2025 18:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</guid><description>&lt;h1 id="aop切面java新手"&gt;AOP切面(java新手)&lt;/h1&gt;
+&lt;h2 id="-一为什么要用-aop"&gt;🌟 一、为什么要用 AOP？&lt;/h2&gt;
+&lt;p&gt;想象一下：你在开发一个电商网站，有几十个接口，比如&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户登录&lt;/li&gt;
+&lt;li&gt;下单&lt;/li&gt;
+&lt;li&gt;查看商品&lt;/li&gt;
+&lt;li&gt;修改地址&lt;/li&gt;
+&lt;li&gt;支付订单&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些功能都属于“业务逻辑”（核心功能）。但你发现，&lt;strong&gt;每个接口都需要做两件事&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;记录日志&lt;/strong&gt;（谁在什么时候调用了哪个接口？）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;检查用户有没有权限&lt;/strong&gt;（比如普通用户不能删别人订单）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果不用 AOP，你可能会在&lt;strong&gt;每个方法里手动写日志和权限检查代码&lt;/strong&gt;，像这样&lt;/p&gt;
+&lt;p&gt;问题来了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;代码重复！每个方法都要写一样的日志和权限。&lt;/li&gt;
+&lt;li&gt;业务逻辑被“污染”了，看不清核心功能。&lt;/li&gt;
+&lt;li&gt;如果哪天要改日志格式？得改几十个地方！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;👉 &lt;strong&gt;AOP 就是为了解决这种“横着切”的公共问题而生的！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;👉 &lt;strong&gt;AOP 就是为了解决这种“横着切”的公共问题而生的！&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;✅ &lt;strong&gt;AOP 的核心思想&lt;/strong&gt;：
+把那些&lt;strong&gt;和业务无关但又到处要用的功能&lt;/strong&gt;（比如日志、权限、事务、防重提交）&lt;strong&gt;抽出来&lt;/strong&gt;，写在一个地方，自动“织入”到需要的地方。
+业务代码只管做自己的事，干净清爽！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="-二怎么理解-aop用两个真实例子"&gt;🧩 二、怎么理解 AOP？用两个真实例子&lt;/h2&gt;
+&lt;h2 id="-自动记录接口日志最常见"&gt;✅ 自动记录接口日志（最常见！）&lt;/h2&gt;
+&lt;h4 id="场景"&gt;场景：&lt;/h4&gt;
+&lt;p&gt;你想知道哪些用户调用了哪些接口、花了多长时间。&lt;/p&gt;
+&lt;h4 id="不用-aop麻烦"&gt;不用 AOP（麻烦）：&lt;/h4&gt;
+&lt;p&gt;每个 Controller 方法里手写 &lt;code&gt;logger.info(...)&lt;/code&gt;。&lt;/p&gt;
+&lt;h4 id="用-aop优雅"&gt;用 AOP（优雅）：&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;定义一个“切面”类&lt;/strong&gt;（专门处理日志）：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Aspect&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Component&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;LogAspect&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; Logger logger &lt;span style="color:#f92672"&gt;=&lt;/span&gt; LoggerFactory.&lt;span style="color:#a6e22e"&gt;getLogger&lt;/span&gt;(LogAspect.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 定义“切入点”：所有 Controller 包下的 public 方法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Pointcut&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;execution(public * com.example.controller..*.*(..))&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;controllerMethods&lt;/span&gt;() {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 在方法执行前记录开始&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Before&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;controllerMethods()&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;logBefore&lt;/span&gt;(JoinPoint joinPoint) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; String methodName &lt;span style="color:#f92672"&gt;=&lt;/span&gt; joinPoint.&lt;span style="color:#a6e22e"&gt;getSignature&lt;/span&gt;().&lt;span style="color:#a6e22e"&gt;getName&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Object&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args &lt;span style="color:#f92672"&gt;=&lt;/span&gt; joinPoint.&lt;span style="color:#a6e22e"&gt;getArgs&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logger.&lt;span style="color:#a6e22e"&gt;info&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;调用方法: {}, 参数: {}&amp;#34;&lt;/span&gt;, methodName, Arrays.&lt;span style="color:#a6e22e"&gt;toString&lt;/span&gt;(args));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 在方法执行后记录耗时&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Around&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;controllerMethods()&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; Object &lt;span style="color:#a6e22e"&gt;logTime&lt;/span&gt;(ProceedingJoinPoint joinPoint) &lt;span style="color:#66d9ef"&gt;throws&lt;/span&gt; Throwable {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;long&lt;/span&gt; start &lt;span style="color:#f92672"&gt;=&lt;/span&gt; System.&lt;span style="color:#a6e22e"&gt;currentTimeMillis&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Object result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; joinPoint.&lt;span style="color:#a6e22e"&gt;proceed&lt;/span&gt;(); &lt;span style="color:#75715e"&gt;// 执行原方法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;long&lt;/span&gt; time &lt;span style="color:#f92672"&gt;=&lt;/span&gt; System.&lt;span style="color:#a6e22e"&gt;currentTimeMillis&lt;/span&gt;() &lt;span style="color:#f92672"&gt;-&lt;/span&gt; start;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logger.&lt;span style="color:#a6e22e"&gt;info&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;方法 {} 耗时 {}ms&amp;#34;&lt;/span&gt;, joinPoint.&lt;span style="color:#a6e22e"&gt;getSignature&lt;/span&gt;().&lt;span style="color:#a6e22e"&gt;getName&lt;/span&gt;(), time);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; result;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;你的业务代码完全不用改！&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@RestController&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;OrderController&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@PostMapping&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;/order&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; String &lt;span style="color:#a6e22e"&gt;createOrder&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;@RequestBody&lt;/span&gt; Order order) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 只写业务逻辑！日志自动加上了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; orderService.&lt;span style="color:#a6e22e"&gt;save&lt;/span&gt;(order);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;success&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;✅ &lt;strong&gt;效果&lt;/strong&gt;：只要调用 &lt;code&gt;/order&lt;/code&gt;，AOP 自动帮你打日志、算时间，&lt;strong&gt;业务代码零侵入&lt;/strong&gt;！&lt;/p&gt;</description></item><item><title>注解和Map(新手理解)</title><link>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</link><pubDate>Fri, 21 Nov 2025 10:50:00 +0800</pubDate><guid>http://ljj1992.fun/posts/%E6%B3%A8%E8%A7%A3%E5%92%8Cmap/</guid><description>&lt;h1 id="注解和map新手理解"&gt;注解和Map(新手理解)&lt;/h1&gt;
 &lt;p&gt;把「注解」和「Map」结合起来用，让你明白它们在实际开发中是怎么配合工作的。&lt;/p&gt;
 &lt;p&gt;Map 就是“映射”的意思，你可以把它想象成一张 Excel 表，只有两列：&lt;/p&gt;
 &lt;ul&gt;
