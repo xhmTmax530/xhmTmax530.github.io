@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>大模型编程 on star徐的博客</title><link>http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/</link><description>Recent content in 大模型编程 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Dec 2025 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>openspec新人手册</title><link>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</link><pubDate>Sat, 13 Dec 2025 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="openspec新人手册"&gt;openspec新人手册&lt;/h1&gt;
+&lt;h2 id="为什么选择-openspec"&gt;为什么选择 OpenSpec？&lt;/h2&gt;
+&lt;p&gt;AI 编码助手功能强大，但如果需求记录在聊天记录中，其表现就难以预测。OpenSpec 提供了一种轻量级的规范工作流程，在实现之前锁定意图，从而提供确定性且可审查的输出。&lt;/p&gt;
+&lt;h3 id="主要成果"&gt;主要成果：&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;在工作开始前，人类和人工智能相关人员需就技术规范达成一致。&lt;/li&gt;
+&lt;li&gt;结构化的变更文件夹（提案、任务和规范更新）使范围明确且可审计。&lt;/li&gt;
+&lt;li&gt;共享对已提议、正在进行或已存档内容的可见性。&lt;/li&gt;
+&lt;li&gt;可与您已使用的 AI 工具配合使用：在支持自定义斜杠命令的地方使用自定义斜杠命令，在其他所有地方使用上下文规则。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="openspec-的对比概览"&gt;OpenSpec 的对比（概览）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;轻量级：工作流程简单，无需 API 密钥，设置极少。&lt;/li&gt;
+&lt;li&gt;先进行现有功能移植：在 0→1 之后也能很好地工作。OpenSpec 将真实数据源与提案分开：@0#（当前真实数据源）和 @1#（提案更新）。这使得不同功能之间的差异清晰明了且易于管理。&lt;/li&gt;
+&lt;li&gt;变更跟踪：提案、任务和规范增量放在一起；归档会将已批准的更新合并回规范中。&lt;/li&gt;
+&lt;li&gt;与 spec-kit 和 Kiro 相比：它们在全新特性（0→1）方面表现出色。OpenSpec 在修改现有行为（1→n）方面也同样优秀，尤其是在更新涉及多个规范时。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="工作原理"&gt;工作原理&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;┌──────────────────────────────┐
+│ 1. 意图“翻译” (Draft) │
+│ (把“人话”变成“技术文档”) │
+└──────────────┬───────────────┘
+│ 你的原始需求：&amp;#34;给网页加个夜间模式&amp;#34;
+▼
+┌──────────────────────────────┐
+│ 2. 签订“施工合同” (Review) │◀───[ 拒绝无效返工 ]───┐
+│ (锁定修改范围，禁止AI乱动) │ │
+└──────────────┬───────────────┘ │
+│ 你点头确认：&amp;#34;就改这3个文件，别的别动&amp;#34; │
+▼ │
+┌──────────────────────────────┐ │
+│ 3. 傻瓜式执行 (Implement) │ 🚧 发现逻辑漏洞？ │
+│ (AI 闭嘴干活，只写代码) │ 🛑 停！回去改文档！────┘
+└──────────────┬───────────────┘
+│ 代码跑通，测试通过
+▼
+┌──────────────────────────────┐
+│ 4. 更新“项目宪法” (Archive) │
+│ (让项目永远保持最新状态) │
+└──────────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我把这个流程分成了四个更有深度的阶段，咱们一个个来看：&lt;/p&gt;</description></item></channel></rss>
