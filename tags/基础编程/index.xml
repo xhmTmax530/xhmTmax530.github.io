@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>基础编程 on star徐的博客</title><link>http://ljj1992.fun/tags/%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/</link><description>Recent content in 基础编程 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Sun, 23 Nov 2025 18:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>AOP切面(java新手)</title><link>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</link><pubDate>Sun, 23 Nov 2025 18:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</guid><description>&lt;h1 id="aop切面java新手"&gt;AOP切面(java新手)&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>基础编程 on star徐的博客</title><link>http://ljj1992.fun/tags/%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/</link><description>Recent content in 基础编程 on star徐的博客</description><generator>Hugo -- 0.155.2</generator><language>zh-cn</language><lastBuildDate>Sun, 23 Nov 2025 18:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>AOP切面(java新手)</title><link>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</link><pubDate>Sun, 23 Nov 2025 18:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/aop%E5%88%87%E9%9D%A2/</guid><description>&lt;h1 id="aop切面java新手"&gt;AOP切面(java新手)&lt;/h1&gt;
 &lt;h2 id="-一为什么要用-aop"&gt;🌟 一、为什么要用 AOP？&lt;/h2&gt;
 &lt;p&gt;想象一下：你在开发一个电商网站，有几十个接口，比如&lt;/p&gt;
 &lt;ul&gt;
@@ -37,7 +37,7 @@
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;定义一个“切面”类&lt;/strong&gt;（专门处理日志）：&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Aspect&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Aspect&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Component&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;LogAspect&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -68,7 +68,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;你的业务代码完全不用改！&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@RestController&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@RestController&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;OrderController&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@PostMapping&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;/order&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; String &lt;span style="color:#a6e22e"&gt;createOrder&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;@RequestBody&lt;/span&gt; Order order) {
@@ -149,7 +149,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;p&gt;&lt;strong&gt;✅ 场景举例：不同支付方式（微信、支付宝、银行卡）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;我们写一个简单的购物程序，支持多种支付方式，使用策略模式来实现。&lt;/p&gt;
 &lt;h3 id="-第一步定义一个支付策略接口"&gt;💡 第一步：定义一个“支付策略”接口&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义一个统一的“支付方式”接口&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义一个统一的“支付方式”接口&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 所有具体的支付方式（如微信、支付宝）都要实现这个接口&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PaymentStrategy&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 这个方法表示“执行支付”，具体怎么付由子类决定&lt;/span&gt;
@@ -166,7 +166,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;hr&gt;
 &lt;h3 id="-第二步实现具体的支付策略"&gt;💡 第二步：实现具体的支付策略&lt;/h3&gt;
 &lt;h4 id="1-微信支付策略"&gt;1. 微信支付策略&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 微信支付的具体实现类&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 微信支付的具体实现类&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;WeChatPayment&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; PaymentStrategy {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 实现 pay 方法：用微信支付&lt;/span&gt;

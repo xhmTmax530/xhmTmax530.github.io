@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>大模型编程 on star徐的博客</title><link>http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/</link><description>Recent content in 大模型编程 on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Dec 2025 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>openspec新人手册</title><link>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</link><pubDate>Sat, 13 Dec 2025 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="openspec新人手册"&gt;openspec新人手册&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>大模型编程 on star徐的博客</title><link>http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/</link><description>Recent content in 大模型编程 on star徐的博客</description><generator>Hugo -- 0.155.2</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Feb 2026 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>解构 Anthropic Agent 标准：深入理解并构建 Claude Skills</title><link>http://ljj1992.fun/posts/agentskill/</link><pubDate>Tue, 03 Feb 2026 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/agentskill/</guid><description>&lt;h1 id="解构-anthropic-agent-标准深入理解并构建-claude-skills"&gt;解构 Anthropic Agent 标准：深入理解并构建 Claude Skills&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;简介：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大模型应用开发中，如何让 LLM 既保持通用的对话能力，又能精准执行特定领域的复杂任务？Anthropic 最近推出的 &lt;strong&gt;Claude Code&lt;/strong&gt; 和配套的 &lt;strong&gt;Skills 架构&lt;/strong&gt; 给出了一个优雅的答案。&lt;/p&gt;
+&lt;p&gt;这里的 Skills 并非简单的系统提示词（System Prompt），而是一个包含**路由层（Router）、指令层（Instruction）和执行层（Execution）**的完整微服务架构。它允许 Claude 根据用户意图动态挂载上下文，甚至调用本地 Python 脚本执行实际操作。这实际上是将传统的“人机对话”升级为了“人与 Agent 的协作”。&lt;/p&gt;
+&lt;p&gt;在这篇文章中，我整理了基于官方文档Skills 的运行原理，并跳过繁琐的理论，通过贴近实际的演示案例来如何利用 Claude 的自举能力（Bootstrapping）来快速构建高效的 Agent 技能包。&lt;/p&gt;
+&lt;h2 id="一安装要求"&gt;一、安装要求：&lt;/h2&gt;
+&lt;p&gt;网络环境需要自己解决，我建议使用Linux（Ubuntu系统），如果你是Windows系统可以安装WSL配合Vscode插件也非常好用&lt;/p&gt;
+&lt;p&gt;在 &lt;strong&gt;Ubuntu 系统&lt;/strong&gt;（需为 20.04+ 版本）上安装 Claude Code 非常简单，官方推荐使用&lt;strong&gt;原生安装程序&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;以下是具体的安装步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;系统要求检查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;• &lt;strong&gt;操作系统&lt;/strong&gt;：Ubuntu 20.04 或更高版本。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;硬件&lt;/strong&gt;：至少 4 GB 内存。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;网络&lt;/strong&gt;：需要互联网连接。&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;执行安装命令（推荐方式）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在终端中直接运行以下官方提供的&lt;strong&gt;原生安装脚本&lt;/strong&gt;，这是最快且最稳定的方式：,&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;curl -fsSL https://claude.anthropic.com/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此脚本会自动下载适用于 Linux 的二进制文件并完成配置。&lt;/p&gt;
+&lt;h2 id="二skills-的架构与运行原理"&gt;二、Skills 的架构与运行原理&lt;/h2&gt;
+&lt;p&gt;Claude Skills（特别是用于 Claude Code CLI 的 Skills）的核心设计理念是&lt;strong&gt;按需加载的专家系统&lt;/strong&gt;。它的架构可以清晰地分为三层：&lt;/p&gt;</description></item><item><title>openspec新人手册</title><link>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</link><pubDate>Sat, 13 Dec 2025 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="openspec新人手册"&gt;openspec新人手册&lt;/h1&gt;
 &lt;p&gt;欢迎来到OpenSpec的新人手册！本手册将为您全面介绍OpenSpec的理念、工作流程和使用方法，帮助您快速掌握这个强大的AI编程规范工具。&lt;/p&gt;
 &lt;h2 id="-为什么选择-openspec"&gt;✨ 为什么选择 OpenSpec？&lt;/h2&gt;
 &lt;p&gt;AI 编码助手功能强大，但如果需求记录在聊天记录中，其表现就难以预测。OpenSpec 提供了一种轻量级的规范工作流程，在实现之前锁定意图，从而提供确定性且可审查的输出。&lt;/p&gt;

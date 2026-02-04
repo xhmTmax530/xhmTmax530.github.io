@@ -6,7 +6,7 @@
 架构组成与设计框架 整体架构
 Skill Seeker 采用模块化设计，分为 CLI（命令行接口）、MCP 服务器和辅助脚本。核心是 Python 脚本，使用 requests 和 beautifulsoup4 抓取网页。
 CLI 核心（cli/ 目录） doc_scraper.py：抓取文档，生成 raw 数据和技能目录。 pdf_extractor_poc.py：PDF 处理，支持 OCR、表格、图像提取。 enhance_skill_local.py：本地增强 SKILL.md。 package_skill.py：打包 ZIP。 split_config.py：分割大型配置。 estimate_pages.py：估算页面数。 MCP 服务器（skill_seeker_mcp/ 目录） server.py：MCP 协议服务器，与 Claude Code 通信，支持 9 个工具（如 generate_config、scrape_docs）。 通过自然语言桥接 CLI 功能。 配置与输出 configs/：JSON 预设（如 base_url、max_pages）。 output/：技能目录（SKILL.md + references/）和 ZIP 文件。 依赖：requests、beautifulsoup4、pytesseract（OCR）、PyMuPDF（PDF）等。虚拟环境（venv）隔离。 设计框架
-...</p></div><footer class=entry-footer><span title='2025-11-19 17:00:00 +0800 +0800'>November 19, 2025</span>&nbsp;·&nbsp;<span>您的姓名</span></footer><a class=entry-link aria-label="post link to Skill Seeker中文使用手册" href=http://ljj1992.fun/posts/skillseeker2025111901/></a></article></div></main><footer class=footer><span>&copy; 2025 <a href=http://ljj1992.fun/>star徐的博客</a></span> ·
+...</p></div><footer class=entry-footer><span title='2025-11-19 17:00:00 +0800 +0800'>November 19, 2025</span>&nbsp;·&nbsp;<span>您的姓名</span></footer><a class=entry-link aria-label="post link to Skill Seeker中文使用手册" href=http://ljj1992.fun/posts/skillseeker2025111901/></a></article></div></main><footer class=footer><span>&copy; 2026 <a href=http://ljj1992.fun/>star徐的博客</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

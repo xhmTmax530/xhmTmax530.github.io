@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>AI on star徐的博客</title><link>http://ljj1992.fun/tags/ai/</link><description>Recent content in AI on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Mon, 17 Nov 2025 17:20:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>claudecode常用命令使用解析</title><link>http://ljj1992.fun/posts/claudecode%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/</link><pubDate>Mon, 17 Nov 2025 17:20:00 +0800</pubDate><guid>http://ljj1992.fun/posts/claudecode%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/</guid><description>&lt;h1 id="claude-code-常用命令使用解析"&gt;Claude Code 常用命令使用解析&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>AI on star徐的博客</title><link>http://ljj1992.fun/tags/ai/</link><description>Recent content in AI on star徐的博客</description><generator>Hugo -- 0.155.2</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Feb 2026 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>解构 Anthropic Agent 标准：深入理解并构建 Claude Skills</title><link>http://ljj1992.fun/posts/agentskill/</link><pubDate>Tue, 03 Feb 2026 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/agentskill/</guid><description>&lt;h1 id="解构-anthropic-agent-标准深入理解并构建-claude-skills"&gt;解构 Anthropic Agent 标准：深入理解并构建 Claude Skills&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;简介：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大模型应用开发中，如何让 LLM 既保持通用的对话能力，又能精准执行特定领域的复杂任务？Anthropic 最近推出的 &lt;strong&gt;Claude Code&lt;/strong&gt; 和配套的 &lt;strong&gt;Skills 架构&lt;/strong&gt; 给出了一个优雅的答案。&lt;/p&gt;
+&lt;p&gt;这里的 Skills 并非简单的系统提示词（System Prompt），而是一个包含**路由层（Router）、指令层（Instruction）和执行层（Execution）**的完整微服务架构。它允许 Claude 根据用户意图动态挂载上下文，甚至调用本地 Python 脚本执行实际操作。这实际上是将传统的“人机对话”升级为了“人与 Agent 的协作”。&lt;/p&gt;
+&lt;p&gt;在这篇文章中，我整理了基于官方文档Skills 的运行原理，并跳过繁琐的理论，通过贴近实际的演示案例来如何利用 Claude 的自举能力（Bootstrapping）来快速构建高效的 Agent 技能包。&lt;/p&gt;
+&lt;h2 id="一安装要求"&gt;一、安装要求：&lt;/h2&gt;
+&lt;p&gt;网络环境需要自己解决，我建议使用Linux（Ubuntu系统），如果你是Windows系统可以安装WSL配合Vscode插件也非常好用&lt;/p&gt;
+&lt;p&gt;在 &lt;strong&gt;Ubuntu 系统&lt;/strong&gt;（需为 20.04+ 版本）上安装 Claude Code 非常简单，官方推荐使用&lt;strong&gt;原生安装程序&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;以下是具体的安装步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;系统要求检查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;• &lt;strong&gt;操作系统&lt;/strong&gt;：Ubuntu 20.04 或更高版本。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;硬件&lt;/strong&gt;：至少 4 GB 内存。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;网络&lt;/strong&gt;：需要互联网连接。&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;执行安装命令（推荐方式）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在终端中直接运行以下官方提供的&lt;strong&gt;原生安装脚本&lt;/strong&gt;，这是最快且最稳定的方式：,&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;curl -fsSL https://claude.anthropic.com/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此脚本会自动下载适用于 Linux 的二进制文件并完成配置。&lt;/p&gt;
+&lt;h2 id="二skills-的架构与运行原理"&gt;二、Skills 的架构与运行原理&lt;/h2&gt;
+&lt;p&gt;Claude Skills（特别是用于 Claude Code CLI 的 Skills）的核心设计理念是&lt;strong&gt;按需加载的专家系统&lt;/strong&gt;。它的架构可以清晰地分为三层：&lt;/p&gt;</description></item><item><title>claudecode常用命令使用解析</title><link>http://ljj1992.fun/posts/claudecode%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/</link><pubDate>Mon, 17 Nov 2025 17:20:00 +0800</pubDate><guid>http://ljj1992.fun/posts/claudecode%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%A7%A3%E6%9E%90/</guid><description>&lt;h1 id="claude-code-常用命令使用解析"&gt;Claude Code 常用命令使用解析&lt;/h1&gt;
 &lt;p&gt;大家好，作为一个刚接触 Claude Code 的新手，我根据官方文档和一些热门的介绍视频，整理这份学习笔记和实践总结。主要是为了记录自己的学习过程，同时也希望能起到一个抛砖引玉的作用，为同样在入门路上的朋友们提供一些参考和便利。&lt;/p&gt;
 &lt;p&gt;这篇总结更多是我个人的理解和实践，内容可能比较基础，难免有疏漏或错误之处，对于经验丰富的高手们，可以直接略过这篇文章。&lt;/p&gt;
 &lt;h2 id="-第一部分基础入门---安装与启动"&gt;🚀 第一部分：基础入门 - 安装与启动&lt;/h2&gt;

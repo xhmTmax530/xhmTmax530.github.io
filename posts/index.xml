@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on star徐的博客</title><link>http://ljj1992.fun/posts/</link><description>Recent content in Posts on star徐的博客</description><generator>Hugo -- 0.152.2</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Dec 2025 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>openspec新人手册</title><link>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</link><pubDate>Sat, 13 Dec 2025 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="openspec新人手册"&gt;openspec新人手册&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on star徐的博客</title><link>http://ljj1992.fun/posts/</link><description>Recent content in Posts on star徐的博客</description><generator>Hugo -- 0.155.2</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Feb 2026 15:30:00 +0800</lastBuildDate><atom:link href="http://ljj1992.fun/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>解构 Anthropic Agent 标准：深入理解并构建 Claude Skills</title><link>http://ljj1992.fun/posts/agentskill/</link><pubDate>Tue, 03 Feb 2026 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/agentskill/</guid><description>&lt;h1 id="解构-anthropic-agent-标准深入理解并构建-claude-skills"&gt;解构 Anthropic Agent 标准：深入理解并构建 Claude Skills&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;简介：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大模型应用开发中，如何让 LLM 既保持通用的对话能力，又能精准执行特定领域的复杂任务？Anthropic 最近推出的 &lt;strong&gt;Claude Code&lt;/strong&gt; 和配套的 &lt;strong&gt;Skills 架构&lt;/strong&gt; 给出了一个优雅的答案。&lt;/p&gt;
+&lt;p&gt;这里的 Skills 并非简单的系统提示词（System Prompt），而是一个包含**路由层（Router）、指令层（Instruction）和执行层（Execution）**的完整微服务架构。它允许 Claude 根据用户意图动态挂载上下文，甚至调用本地 Python 脚本执行实际操作。这实际上是将传统的“人机对话”升级为了“人与 Agent 的协作”。&lt;/p&gt;
+&lt;p&gt;在这篇文章中，我整理了基于官方文档Skills 的运行原理，并跳过繁琐的理论，通过贴近实际的演示案例来如何利用 Claude 的自举能力（Bootstrapping）来快速构建高效的 Agent 技能包。&lt;/p&gt;
+&lt;h2 id="一安装要求"&gt;一、安装要求：&lt;/h2&gt;
+&lt;p&gt;网络环境需要自己解决，我建议使用Linux（Ubuntu系统），如果你是Windows系统可以安装WSL配合Vscode插件也非常好用&lt;/p&gt;
+&lt;p&gt;在 &lt;strong&gt;Ubuntu 系统&lt;/strong&gt;（需为 20.04+ 版本）上安装 Claude Code 非常简单，官方推荐使用&lt;strong&gt;原生安装程序&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;以下是具体的安装步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;系统要求检查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;• &lt;strong&gt;操作系统&lt;/strong&gt;：Ubuntu 20.04 或更高版本。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;硬件&lt;/strong&gt;：至少 4 GB 内存。&lt;/p&gt;
+&lt;p&gt;• &lt;strong&gt;网络&lt;/strong&gt;：需要互联网连接。&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;执行安装命令（推荐方式）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在终端中直接运行以下官方提供的&lt;strong&gt;原生安装脚本&lt;/strong&gt;，这是最快且最稳定的方式：,&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;curl -fsSL https://claude.anthropic.com/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此脚本会自动下载适用于 Linux 的二进制文件并完成配置。&lt;/p&gt;
+&lt;h2 id="二skills-的架构与运行原理"&gt;二、Skills 的架构与运行原理&lt;/h2&gt;
+&lt;p&gt;Claude Skills（特别是用于 Claude Code CLI 的 Skills）的核心设计理念是&lt;strong&gt;按需加载的专家系统&lt;/strong&gt;。它的架构可以清晰地分为三层：&lt;/p&gt;</description></item><item><title>openspec新人手册</title><link>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</link><pubDate>Sat, 13 Dec 2025 15:30:00 +0800</pubDate><guid>http://ljj1992.fun/posts/openspec%E6%96%B0%E4%BA%BA%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="openspec新人手册"&gt;openspec新人手册&lt;/h1&gt;
 &lt;p&gt;欢迎来到OpenSpec的新人手册！本手册将为您全面介绍OpenSpec的理念、工作流程和使用方法，帮助您快速掌握这个强大的AI编程规范工具。&lt;/p&gt;
 &lt;h2 id="-为什么选择-openspec"&gt;✨ 为什么选择 OpenSpec？&lt;/h2&gt;
 &lt;p&gt;AI 编码助手功能强大，但如果需求记录在聊天记录中，其表现就难以预测。OpenSpec 提供了一种轻量级的规范工作流程，在实现之前锁定意图，从而提供确定性且可审查的输出。&lt;/p&gt;
@@ -96,13 +118,13 @@
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;修改全局安装路径到 D 盘：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm config set prefix &lt;span style="color:#e6db74"&gt;&amp;#34;D:\NodeJS\node_global&amp;#34;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm config set prefix &lt;span style="color:#e6db74"&gt;&amp;#34;D:\NodeJS\node_global&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;修改缓存路径到 D 盘：&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm config set cache &lt;span style="color:#e6db74"&gt;&amp;#34;D:\NodeJS\node_cache&amp;#34;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm config set cache &lt;span style="color:#e6db74"&gt;&amp;#34;D:\NodeJS\node_cache&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;em&gt;验证一下：&lt;/em&gt; 输入 npm config list，检查输出信息中是否包含了你刚才设置的 D 盘路径。&lt;/p&gt;</description></item><item><title>Gemini API File Search</title><link>http://ljj1992.fun/posts/gemini-api-file-search/</link><pubDate>Wed, 26 Nov 2025 18:00:00 +0800</pubDate><guid>http://ljj1992.fun/posts/gemini-api-file-search/</guid><description>&lt;h1 id="gemini-api-file-search"&gt;&lt;strong&gt;Gemini API File Search&lt;/strong&gt;&lt;/h1&gt;
 &lt;h2 id="一-概述"&gt;一. 概述&lt;/h2&gt;
 &lt;ul&gt;
@@ -214,7 +236,7 @@
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;定义一个“切面”类&lt;/strong&gt;（专门处理日志）：&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Aspect&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Aspect&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Component&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;LogAspect&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -245,7 +267,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;你的业务代码完全不用改！&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@RestController&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@RestController&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;OrderController&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@PostMapping&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;/order&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; String &lt;span style="color:#a6e22e"&gt;createOrder&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;@RequestBody&lt;/span&gt; Order order) {
@@ -399,7 +421,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="四代码分析"&gt;四、代码分析&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 步骤1：定义“主题”（Youtuber）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Youtuber&lt;/span&gt;: &lt;span style="color:#75715e"&gt;# 定义一个类，名叫 Youtuber，代表“被订阅的对象”&lt;/span&gt;
@@ -428,7 +450,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; observer &lt;span style="color:#f92672"&gt;in&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;_observers: &lt;span style="color:#75715e"&gt;# 遍历当前所有的粉丝对象&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; observer&lt;span style="color:#f92672"&gt;.&lt;/span&gt;update(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;name, video_title) &lt;span style="color:#75715e"&gt;# **核心中的核心！**&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 调用每个粉丝的 update 方法，把视频信息告诉他&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 步骤2：定义“观察者”模板和具体观察者（粉丝）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; abc &lt;span style="color:#f92672"&gt;import&lt;/span&gt; ABC, abstractmethod &lt;span style="color:#75715e"&gt;# 从 abc 模块导入工具，用来创建抽象类&lt;/span&gt;
@@ -446,7 +468,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;当收到通知时，粉丝的反应&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34; -&amp;gt; 粉丝 [&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;name&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;] 收到了！正在打开 App 查看 [&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;youtuber_name&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;] 的 [&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;video_title&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;]&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 这里就是粉丝真正的反应逻辑，你可以改成发邮件、弹窗、播放声音等等&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 步骤3：运行逻辑（真正看到效果的地方）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -------------------------------------------------&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. 创建主题和观察者&lt;/span&gt;
@@ -488,7 +510,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;p&gt;&lt;strong&gt;✅ 场景举例：不同支付方式（微信、支付宝、银行卡）&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;我们写一个简单的购物程序，支持多种支付方式，使用策略模式来实现。&lt;/p&gt;
 &lt;h3 id="-第一步定义一个支付策略接口"&gt;💡 第一步：定义一个“支付策略”接口&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义一个统一的“支付方式”接口&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义一个统一的“支付方式”接口&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 所有具体的支付方式（如微信、支付宝）都要实现这个接口&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PaymentStrategy&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 这个方法表示“执行支付”，具体怎么付由子类决定&lt;/span&gt;
@@ -505,7 +527,7 @@ Map 是 Java 里“键→值”映射的通用容器；注解在运行时被 JVM
 &lt;hr&gt;
 &lt;h3 id="-第二步实现具体的支付策略"&gt;💡 第二步：实现具体的支付策略&lt;/h3&gt;
 &lt;h4 id="1-微信支付策略"&gt;1. 微信支付策略&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 微信支付的具体实现类&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 微信支付的具体实现类&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;WeChatPayment&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; PaymentStrategy {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 实现 pay 方法：用微信支付&lt;/span&gt;
@@ -797,13 +819,13 @@ System.out.println(&amp;#34;🔚 请求结束了！用户请求处理完成。&a
 &lt;h2 id="第一部分vps-服务器端-配置"&gt;第一部分：VPS (服务器端) 配置&lt;/h2&gt;
 &lt;p&gt;VPS作为流量的最终出口，负责将隧道数据转发至公共互联网。&lt;/p&gt;
 &lt;h3 id="1-系统准备与软件安装"&gt;1. 系统准备与软件安装&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 更新系统软件包列表并升级已安装的软件&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 更新系统软件包列表并升级已安装的软件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装WireGuard&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt install wireguard -y
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="2-启用ip转发"&gt;2. 启用IP转发&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 编辑sysctl配置文件&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 编辑sysctl配置文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo nano /etc/sysctl.conf
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;确保文件中包含以下行（去掉前面的&lt;code&gt;#&lt;/code&gt;号）：&lt;/p&gt;</description></item><item><title>基于WireGuard的国内到国外VPS组网架构</title><link>http://ljj1992.fun/posts/%E5%9F%BA%E4%BA%8Ewireguard%E7%9A%84%E5%9B%BD%E5%86%85%E5%88%B0%E5%9B%BD%E5%A4%96vps%E7%BB%84%E7%BD%91%E6%9E%B6%E6%9E%84/</link><pubDate>Thu, 13 Nov 2025 18:05:00 +0810</pubDate><guid>http://ljj1992.fun/posts/%E5%9F%BA%E4%BA%8Ewireguard%E7%9A%84%E5%9B%BD%E5%86%85%E5%88%B0%E5%9B%BD%E5%A4%96vps%E7%BB%84%E7%BD%91%E6%9E%B6%E6%9E%84/</guid><description>&lt;h2 id="概述与技术栈建议"&gt;概述与技术栈建议&lt;/h2&gt;
 &lt;ul&gt;
@@ -839,7 +861,7 @@ System.out.println(&amp;#34;🔚 请求结束了！用户请求处理完成。&a
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;VPS (服务器端)&lt;/strong&gt;：&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 2. 更新Dnsmasq域名列表&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 2. 更新Dnsmasq域名列表&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wget -O /etc/dnsmasq.d/accelerated-domains.china.conf https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wget -O /etc/dnsmasq.d/bogus-nxdomain.china.conf https://github.com/felixonmars/dnsmasq-china-list/raw/master/bogus-nxdomain.china.conf
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 清空gfwlist ipset，让脚本重新填充&lt;/span&gt;
